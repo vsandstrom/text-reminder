@@ -9,12 +9,12 @@ pub async fn msg_handler() {
                                                                       
     // set message to be sent
     // Could implement a link a website to log exact time for confirmation
-    let msg = "Hello! Ta din medicin!";
+    let msg = format!("{}", std::env::var("MESSAGE").expect("MESSAGE must be set"));
 
     // client should perhaps be initialized
     let client = twilio::Client::new(&ssid, &auth);
-    match send_text(&client, &from, &to, msg).await {
-        Ok(msg) => println!("{:#?}", msg),
+    match send_text(&client, &from, &to, &msg).await {
+        Ok(msg) => println!("{:#?}", &msg),
         Err(err) => eprintln!("{:?}", err),
     }
 }

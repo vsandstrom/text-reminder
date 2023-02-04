@@ -6,6 +6,7 @@ use chrono::{Local, TimeZone, Datelike, Duration};
 use clap::Parser;
 use parse::Args;
 use msg::msg_handler;
+// use schedule;
 
 
 #[tokio::main]
@@ -37,7 +38,7 @@ async fn main() {
         next = next + inc;
     }
 
-    println!("{}", next.timestamp() - now.timestamp());
+    println!("Seconds until reminder: {}", next.timestamp() - now.timestamp());
 
     loop {
         while Local::now() < next {
