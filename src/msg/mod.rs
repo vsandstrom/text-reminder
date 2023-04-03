@@ -14,7 +14,7 @@ pub async fn msg_handler() {
     // Could implement a link a website to log exact time for confirmation
     let msg = std::env::var("TWILIO_MSG").expect("TWILIO_MSG must be set");
     let ip = match get_ip::fetch().await {
-        Ok(i) => i.ip,
+        Ok(ip) => ip,
         Err(_) => "127.0.0.1".to_string(),
     };
     let port = std::env::var("TWILIO_PORT").unwrap_or("8000".to_string());
@@ -23,7 +23,7 @@ pub async fn msg_handler() {
     // client should perhaps be initialized
     let client = twilio::Client::new(&ssid, &auth);
     match send_text(&client, &from, &to, &msg).await {
-        Ok(msg) => println!("{:#?}", msg),
+        Ok(msg) => println!("{:?}", msg),
         Err(err) => eprintln!("{:?}", err),
     }
 }
