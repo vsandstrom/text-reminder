@@ -1,4 +1,7 @@
 use twilio::{OutboundMessage, Client};
+
+
+
 pub async fn msg_handler() {
     
     // get credentials
@@ -9,11 +12,17 @@ pub async fn msg_handler() {
                                                                       
     // set message to be sent
     // Could implement a link a website to log exact time for confirmation
-    let msg = "Hello! Ta din medicin!";
+    let msg = std::env::var("TWILIO_MSG").expect("TWILIO_MSG must be set");
+    let ip = match get_ip::fetch().await {
+        Ok(i) => i.ip,
+        Err(_) => "127.0.0.1".to_string(),
+    };
+    let port = std::env::var("TWILIO_PORT").unwrap_or("8000".to_string());
+    let msg = format!("{} http://{}:{}", msg, ip, port);
 
     // client should perhaps be initialized
     let client = twilio::Client::new(&ssid, &auth);
-    match send_text(&client, &from, &to, msg).await {
+    match send_text(&client, &from, &to, &msg).await {
         Ok(msg) => println!("{:#?}", msg),
         Err(err) => eprintln!("{:?}", err),
     }

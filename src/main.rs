@@ -37,7 +37,7 @@ async fn main() {
         next = next + inc;
     }
 
-    println!("{}", next.timestamp() - now.timestamp());
+    println!("Seconds until next reminder: {}", next.timestamp() - now.timestamp());
 
     loop {
         while Local::now() < next {
